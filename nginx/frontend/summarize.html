@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Audio Summary</title>
+    <!-- Add CSS for modern colors and spinner -->
+    <style>
+        body {
+        background: linear-gradient(to right, #007bff, #6c757d);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        color: #fff;
+        font-family: Arial, sans-serif;
+        flex-direction: column; /* Add this to display elements in separate lines */
+    }
+
+    form {
+        margin-top: 20px;
+        margin-bottom: 30px;
+        display: flex; /* Add this to display elements in a row */
+        justify-content: center; /* Add this to center elements horizontally */
+        align-items: center; /* Add this to center elements vertically */
+    }
+
+    input[type="file"] {
+        margin-right: 10px;
+    }
+
+    button[type="submit"] {
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        padding: 10px 15px;
+        cursor: pointer;
+    }
+
+    #result {
+        font-size: 20px;
+        margin-top: 20px;
+        color: #333;
+        text-align: center; /* Add this to center text horizontally */
+    }
+
+    .spinner {
+        display: none;
+        margin-top: 20px;
+        font-size: 18px;
+        color: #fff;
+    }
+
+    /* Add styles for the Font Awesome spinner */
+    .fa-spinner {
+        animation: rotate 1s infinite linear;
+    }
+
+    @keyframes rotate {
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+
+    </style>
+    <!-- Add Font Awesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Add favicon using a publicly accessible link -->
+    <link rel="icon" type="image/png" href="https://www.twitter.com/favicon.ico">
+</head>
+<body>
+    <h1>Upload Audio File</h1>
+    <form id="uploadForm" enctype="multipart/form-data">
+        <input type="file" name="audio" accept=".mp3, .wav, .aac">
+        <button type="submit">Upload</button>
+    </form>
+    <div id="result"></div>
+    <div id="spinner" class="spinner"><i class="fas fa-spinner fa-spin"></i> Uploading...</div>
+
+    <script>
+        const form = document.getElementById('uploadForm');
+        const spinner = document.getElementById('spinner');
+        form.addEventListener('submit', async (event) => {
+            event.preventDefault();
+            const formData = new FormData(form);
+            spinner.style.display = 'block';
+            const response = await fetch('/api/summarize', {
+                method: 'POST',
+                body: formData
+            });
+            spinner.style.display = 'none';
+            const data = await response.text();
+            // Replace newlines with <br> tags for proper display
+            document.getElementById('result').innerHTML = '<pre>' + data.replace(/\\n/g, '<br>') + '</pre>';
+        });
+    </script>
+</body>
+</html>

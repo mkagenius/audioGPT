@@ -1,0 +1,14 @@
+version: '3'
+services:
+
+  backend:
+    build: ./backend
+    expose:
+      - "5000"  # Expose backend on port 5000
+
+  nginx:
+    build: ./nginx
+    ports:
+      - "80:80"  # Expose Nginx on port 80
+    depends_on:
+      - backend
