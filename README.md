@@ -1,5 +1,7 @@
 # AudioGPT using OpenAI API
 
+### Replace with your own open ai api secret in app.py 
+
 ### RUN using docker compose
 
 `docker compose build`
